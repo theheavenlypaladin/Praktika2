@@ -1,78 +1,56 @@
-package PraktikalWork9;
+package PraktikalWork11;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+import java.util.Locale;
 public class Task3 {
-    static class Student implements Comparable<Student> {
-        int idNumber;
-        String name;
-        double gpa;
-        Student(int idNumber, String name, double gpa) {
-            this.idNumber = idNumber;
-            this.name = name;
-            this.gpa = gpa;
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        SimpleDateFormat inputFormat = new SimpleDateFormat("dd.MM.yyyy");
+        inputFormat.setLenient(false);
+        System.out.print("Введите имя студента: ");
+        String name = scanner.nextLine();
+        System.out.print("Введите дату рождения (дд.ММ.гггг): ");
+        String text = scanner.nextLine();
+        System.out.print("Формат даты: 1 - короткий, 2 - средний, 3 - полный: ");
+        int choice = scanner.nextInt();
+        int format;
+        if (choice == 1) {
+            format = DateFormat.SHORT;
+        } else if (choice == 2) {
+            format = DateFormat.MEDIUM;
+        } else if (choice == 3) {
+            format = DateFormat.FULL;
+        } else {
+            System.out.println("Такого формата нет.");
+            return;
         }
-        @Override
-        public int compareTo(Student other) {
-            return Integer.compare(idNumber, other.idNumber);
+        try {
+            Date birthDate = inputFormat.parse(text);
+            Student student = new Student(name, birthDate, format);
+            System.out.println(student);
+        } catch (ParseException e) {
+            System.out.println("Неверная дата рождения.");
+        }
+    }
+    static class Student {
+        private String name;
+        private Date birthDate;
+        private int dateFormat;
+        public Student(String name, Date birthDate, int dateFormat) {
+            this.name = name;
+            this.birthDate = birthDate;
+            this.dateFormat = dateFormat;
+        }
+        public String formatBirthDate(int format) {
+            DateFormat formatter = DateFormat.getDateInstance(format, new Locale("ru", "RU"));
+            return formatter.format(birthDate);
         }
         @Override
         public String toString() {
-            return idNumber + " " + name + ", средний балл: " + gpa;
-        }
-    }
-    public static void mergeSort(Student[] students, int left, int right) {
-        if (left >= right) {
-            return;
-        }
-        int middle = (left + right) / 2;
-        mergeSort(students, left, middle);
-        mergeSort(students, middle + 1, right);
-        merge(students, left, middle, right);
-    }
-    public static void merge(Student[] students, int left, int middle, int right) {
-        Student[] temp = new Student[right - left + 1];
-        int i = left;
-        int j = middle + 1;
-        int k = 0;
-        while (i <= middle && j <= right) {
-            if (students[i].compareTo(students[j]) <= 0) {
-                temp[k++] = students[i++];
-            } else {
-                temp[k++] = students[j++];
-            }
-        }
-        while (i <= middle) {
-            temp[k++] = students[i++];
-        }
-        while (j <= right) {
-            temp[k++] = students[j++];
-        }
-        for (k = 0; k < temp.length; k++) {
-            students[left + k] = temp[k];
-        }
-    }
-    public static Student[] unite(Student[] first, Student[] second) {
-        Student[] result = new Student[first.length + second.length];
-        for (int i = 0; i < first.length; i++) {
-            result[i] = first[i];
-        }
-        for (int i = 0; i < second.length; i++) {
-            result[first.length + i] = second[i];
-        }
-        mergeSort(result, 0, result.length - 1);
-        return result;
-    }
-    public static void main(String[] args) {
-        Student[] first = {
-                new Student(105, "Анна", 4.7),
-                new Student(101, "Иван", 4.2),
-                new Student(103, "Олег", 3.8)
-        };
-        Student[] second = {
-                new Student(104, "Мария", 4.9),
-                new Student(102, "Павел", 4.0)
-        };
-        Student[] result = unite(first, second);
-        for (Student student : result) {
-            System.out.println(student);
+            return "Студент: " + name + ", дата рождения: " + formatBirthDate(dateFormat);
         }
     }
 }

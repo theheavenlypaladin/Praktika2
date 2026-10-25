@@ -1,20 +1,44 @@
-package PraktikalWork8;
-import java.util.Scanner;
+package PraktikalWork11;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 public class Task5 {
-    public static int sumDigits(long n) {
-        if (n < 10) {
-            return (int) n;
+    public static void measure(List<Integer> list, String name) {
+        int size = 20000;
+        int repeat = 1000;
+        long start = System.nanoTime();
+        for (int i = 0; i < size; i++) {
+            list.add(i);
         }
-        return (int) (n % 10) + sumDigits(n / 10);
+        long addTime = System.nanoTime() - start;
+        start = System.nanoTime();
+        for (int i = 0; i < repeat; i++) {
+            list.add(list.size() / 2, -1);
+        }
+        long insertTime = System.nanoTime() - start;
+        start = System.nanoTime();
+        for (int i = 0; i < repeat; i++) {
+            list.remove(list.size() / 2);
+        }
+        long removeTime = System.nanoTime() - start;
+        int found = 0;
+        start = System.nanoTime();
+        for (int i = 0; i < repeat; i++) {
+            if (list.contains(size - 1)) {
+                found++;
+            }
+        }
+        long searchTime = System.nanoTime() - start;
+        System.out.println(name);
+        System.out.println("Добавление " + size + " элементов в конец: " + addTime + " нс");
+        System.out.println("Вставка " + repeat + " элементов в середину: " + insertTime + " нс");
+        System.out.println("Удаление " + repeat + " элементов из середины: " + removeTime + " нс");
+        System.out.println("Поиск последнего значения " + repeat + " раз: " + searchTime + " нс");
+        System.out.println("Число успешных поисков: " + found);
+        System.out.println();
     }
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите натуральное число N:");
-        long n = scanner.nextLong();
-        if (n < 1) {
-            System.out.println("N должно быть натуральным числом.");
-            return;
-        }
-        System.out.println(sumDigits(n));
+        measure(new ArrayList<Integer>(), "ArrayList");
+        measure(new LinkedList<Integer>(), "LinkedList");
     }
 }
