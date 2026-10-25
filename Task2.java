@@ -1,29 +1,39 @@
-package PraktikalWork11;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
+package PraktikalWork13;
 public class Task2 {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        format.setLenient(false);
-        System.out.print("Введите дату и время (дд.ММ.гггг ЧЧ:мм:сс): ");
-        String text = scanner.nextLine();
-        try {
-            Date entered = format.parse(text);
-            Date current = new Date(System.currentTimeMillis() / 1000 * 1000);
-            System.out.println("Текущая дата: " + format.format(current));
-            System.out.println("Введенная дата: " + format.format(entered));
-            if (entered.before(current)) {
-                System.out.println("Введенная дата раньше текущей.");
-            } else if (entered.after(current)) {
-                System.out.println("Введенная дата позже текущей.");
-            } else {
-                System.out.println("Даты совпадают.");
+        Person[] people = {
+                new Person("Иванов", "Иван", "Иванович"),
+                new Person("Петров", "Пётр", null),
+                new Person("Сидоров", "", "Петрович"),
+                new Person("Смирнов", null, null)
+        };
+        for (Person person : people) {
+            System.out.println(person.getFullName());
+        }
+    }
+    static class Person {
+        private String surname;
+        private String firstName;
+        private String patronymic;
+        public Person(String surname, String firstName, String patronymic) {
+            this.surname = surname == null ? "" : surname.trim();
+            this.firstName = firstName == null ? "" : firstName.trim();
+            this.patronymic = patronymic == null ? "" : patronymic.trim();
+        }
+        public String getFullName() {
+            StringBuilder result = new StringBuilder(surname);
+            if (!firstName.isEmpty() || !patronymic.isEmpty()) {
+                if (result.length() > 0) {
+                    result.append(' ');
+                }
+                if (!firstName.isEmpty()) {
+                    result.append(firstName.charAt(0)).append('.');
+                }
+                if (!patronymic.isEmpty()) {
+                    result.append(patronymic.charAt(0)).append('.');
+                }
             }
-        } catch (ParseException e) {
-            System.out.println("Неверная дата или время.");
+            return result.toString();
         }
     }
 }
