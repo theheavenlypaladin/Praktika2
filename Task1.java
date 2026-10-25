@@ -1,44 +1,59 @@
-package PraktikalWork9;
+package PraktikalWork10;
 public class Task1 {
-    static class Student implements Comparable<Student> {
-        int idNumber;
-        String name;
-        double gpa;
-        Student(int idNumber, String name, double gpa) {
-            this.idNumber = idNumber;
-            this.name = name;
-            this.gpa = gpa;
-        }
-        @Override
-        public int compareTo(Student other) {
-            return Integer.compare(idNumber, other.idNumber);
-        }
-        @Override
-        public String toString() {
-            return idNumber + " " + name + ", средний балл: " + gpa;
-        }
-    }
-    public static void insertionSort(Student[] iDNumber) {
-        for (int i = 1; i < iDNumber.length; i++) {
-            Student current = iDNumber[i];
-            int j = i - 1;
-            while (j >= 0 && iDNumber[j].compareTo(current) > 0) {
-                iDNumber[j + 1] = iDNumber[j];
-                j--;
-            }
-            iDNumber[j + 1] = current;
-        }
-    }
     public static void main(String[] args) {
-        Student[] iDNumber = {
-                new Student(103, "Анна", 4.7),
-                new Student(101, "Иван", 4.2),
-                new Student(104, "Олег", 3.8),
-                new Student(102, "Мария", 4.9)
-        };
-        insertionSort(iDNumber);
-        for (Student student : iDNumber) {
-            System.out.println(student);
+        Student student = new Student("Иван", "Петров", "Информатика", 2, "ИВТ-21");
+        System.out.println(student);
+        student.setCourse(3);
+        student.setGroup("ИВТ-31");
+        System.out.println("После изменения курса и группы:");
+        System.out.println(student);
+    }
+    static class Student {
+        private String firstName;
+        private String lastName;
+        private String specialty;
+        private int course;
+        private String group;
+        public Student(String firstName, String lastName, String specialty, int course, String group) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.specialty = specialty;
+            this.course = course;
+            this.group = group;
+        }
+        public String getFirstName() {
+            return firstName;
+        }
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+        public String getLastName() {
+            return lastName;
+        }
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+        public String getSpecialty() {
+            return specialty;
+        }
+        public void setSpecialty(String specialty) {
+            this.specialty = specialty;
+        }
+        public int getCourse() {
+            return course;
+        }
+        public void setCourse(int course) {
+            this.course = course;
+        }
+        public String getGroup() {
+            return group;
+        }
+        public void setGroup(String group) {
+            this.group = group;
+        }
+        public String toString() {
+            return lastName + " " + firstName + ", " + specialty
+                    + ", курс " + course + ", группа " + group;
         }
     }
 }
