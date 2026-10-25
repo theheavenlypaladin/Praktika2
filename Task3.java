@@ -1,81 +1,22 @@
-package PraktikalWork13;
-import java.util.StringTokenizer;
+package PraktikalWork14;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class Task3 {
     public static void main(String[] args) {
-        String[] commaAddresses = {
-                " Россия, Московская область, Химки, Молодёжная, 10, 2, 15 ",
-                "Россия, Ленинградская область, Гатчина, Соборная, 7, , 21",
-                "Беларусь, Минская область, Борисов, Гагарина, 12, 1, 8",
-                "Казахстан, Акмолинская область, Кокшетау, Абая, 5, 3, 42"
-        };
-        System.out.println("Разбор методом split():");
-        for (String line : commaAddresses) {
-            System.out.println(Address.parseWithSplit(line));
-            System.out.println();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите текст с ценами:");
+        String text = scanner.nextLine();
+        String regex = "(?<![\\w.,+-])\\d+(\\.\\d{1,2})?\\s+(USD|RUB|EU)\\b";
+        Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CHARACTER_CLASS);
+        Matcher matcher = pattern.matcher(text);
+        boolean found = false;
+        while (matcher.find()) {
+            System.out.println(matcher.group());
+            found = true;
         }
-        String[] mixedAddresses = {
-                " Россия; Московская область. Химки, Молодёжная; 10. 2, 15 ",
-                "Россия. Ленинградская область; Гатчина, Соборная. 7;; 21",
-                "Беларусь; Минская область, Борисов. Гагарина; 12, 1. 8",
-                "Казахстан. Акмолинская область; Кокшетау, Абая. 5; 3, 42"
-        };
-        System.out.println("Разбор классом StringTokenizer:");
-        for (String line : mixedAddresses) {
-            System.out.println(Address.parseWithTokenizer(line));
-            System.out.println();
-        }
-    }
-    static class Address {
-        private String country;
-        private String region;
-        private String city;
-        private String street;
-        private String house;
-        private String building;
-        private String apartment;
-        private Address(String[] parts) {
-            if (parts.length != 7) {
-                throw new IllegalArgumentException("В адресе должно быть 7 частей.");
-            }
-            country = parts[0].trim();
-            region = parts[1].trim();
-            city = parts[2].trim();
-            street = parts[3].trim();
-            house = parts[4].trim();
-            building = parts[5].trim();
-            apartment = parts[6].trim();
-        }
-        public static Address parseWithSplit(String line) {
-            return new Address(line.split(",", -1));
-        }
-        public static Address parseWithTokenizer(String line) {
-            String[] parts = {"", "", "", "", "", "", ""};
-            StringTokenizer tokenizer = new StringTokenizer(line, ",.;", true);
-            int index = 0;
-            while (tokenizer.hasMoreTokens()) {
-                String token = tokenizer.nextToken();
-                if (token.equals(",") || token.equals(".") || token.equals(";")) {
-                    index++;
-                    if (index >= parts.length) {
-                        throw new IllegalArgumentException("Слишком много частей адреса.");
-                    }
-                } else {
-                    parts[index] = token;
-                }
-            }
-            if (index != 6) {
-                throw new IllegalArgumentException("В адресе должно быть 7 частей.");
-            }
-            return new Address(parts);
-        }
-        public String toString() {
-            return "Страна: " + country
-                    + "\nРегион: " + region
-                    + "\nГород: " + city
-                    + "\nУлица: " + street
-                    + "\nДом: " + house
-                    + "\nКорпус: " + building
-                    + "\nКвартира: " + apartment;
+        if (!found) {
+            System.out.println("Цены не найдены.");
         }
     }
 }

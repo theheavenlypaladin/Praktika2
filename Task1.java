@@ -1,29 +1,20 @@
-package PraktikalWork13;
+package PraktikalWork14;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 public class Task1 {
-    public static void processString(String text) {
-        if (!text.isEmpty()) {
-            System.out.println("Последний символ: " + text.charAt(text.length() - 1));
-        } else {
-            System.out.println("Строка пустая, последнего символа нет.");
-        }
-        System.out.println("Заканчивается на !!!: " + text.endsWith("!!!"));
-        System.out.println("Начинается с I like: " + text.startsWith("I like"));
-        System.out.println("Содержит Java: " + text.contains("Java"));
-        int position = text.indexOf("Java");
-        System.out.println("Позиция Java: " + position);
-        System.out.println("Замена a на o: " + text.replace('a', 'o'));
-        System.out.println("Верхний регистр: " + text.toUpperCase());
-        System.out.println("Нижний регистр: " + text.toLowerCase());
-        if (position != -1) {
-            System.out.println("Подстрока: " + text.substring(position, position + 4));
-        } else {
-            System.out.println("Подстрока Java не найдена.");
-        }
-    }
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите строку, например I like Java!!!:");
-        processString(scanner.nextLine());
+        System.out.println("Введите строку:");
+        String text = scanner.nextLine();
+        Pattern pattern = Pattern.compile("[\\s,;.!?]+", Pattern.UNICODE_CHARACTER_CLASS);
+        String[] words = pattern.split(text);
+        int count = 0;
+        for (int i = 0; i < words.length; i++) {
+            if (!words[i].isEmpty()) {
+                count++;
+                System.out.println(count + ": " + words[i]);
+            }
+        }
+        System.out.println("Количество элементов: " + count);
     }
 }
